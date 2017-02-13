@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Coil</title>
+    <link rel="stylesheet" href="assets/css/ring.css">
+    <meta charset="utf-8" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+      }
+
+      body {
+        -webkit-app-region: drag;
+      }
+    </style>
+
+    <script>
+      const _ = require('lodash')
+      const url = require('url')
+      const config = require('./config')
+      const defaultSongImageUrl = 'assets/images/unknown-song-174x174.jpg'
+
+      const setImg = (imgUrl) => {
+        const loading = document.getElementById('loading')
+        if (loading) {
+          document.body.removeChild(loading)
+        }
+        document.getElementById('song-art').src = imgUrl
+      }
+
+      const handleGetRecentTracks = ({ target }) => {
+        const { responseText, status } = target
+        if (status === 200) {
+          const data = JSON.parse(responseText)
+          const firstTrack = data.recenttracks.track[0]
+          const largeImage = _.find(firstTrack.image, {size: 'large'})
+          const imageUrl = largeImage['#text']
+          setImg(imageUrl === '' ? defaultSongImageUrl : imageUrl)
+        }
+
+        // trigger getting the last song info after 30 seconds
+        setTimeout(() => getScrobbledSongs(config), 30000)
+      }
+
+      const getScrobbledSongs = ({user, api_key}) => {
+        let target = url.format({
+          protocol: 'http:',
+          hostname: 'ws.audioscrobbler.com',
+          pathname: '/2.0',
+          query: {
+            method: 'user.getrecenttracks',
+            format: 'json',
+            user,
+            api_key
+          }
+        })
+
+        let req = new XMLHttpRequest()
+        req.addEventListener('load', handleGetRecentTracks)
+        req.open('GET', target)
+        req.send()
+      }
+
+      window.onload = () => {
+        setTimeout(() => setImg(defaultSongImageUrl), 2000)
+        getScrobbledSongs(config)
+      }
+    </script>
+  </head>
+  <body>
+    <div id="loading"
+         class='uil-ring-css'
+         style='transform:scale(0.87);'>
+         <div></div>
+    </div>
+
+    <img
+      id="song-art"
+      width="174px"
+      height="174px" />
+  </body>
+</html>

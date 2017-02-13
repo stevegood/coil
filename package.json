@@ -1,0 +1,30 @@
+{
+  "name": "coil",
+  "version": "1.0.0",
+  "description": "Displays scrobbled music info from last.fm",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/stevegood/coil.git"
+  },
+  "keywords": [
+    "last.fm",
+    "music",
+    "scrobble",
+    "electron"
+  ],
+  "author": "Steve Good <sgood@lanctr.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stevegood/coil/issues"
+  },
+  "homepage": "https://github.com/stevegood/coil#readme",
+  "dependencies": {
+    "electron": "^1.4.15",
+    "lodash": "^4.17.4"
+  }
+}
