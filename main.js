@@ -8,6 +8,7 @@ const createWindow = (win) => {
   win = new BrowserWindow({
     width: 174,
     height: 174,
+    resizable: false,
     frame: false
   })
 
@@ -39,3 +40,5 @@ app.on('activate', () => {
     win = createWindow(win)
   }
 })
+
+app.commandLine.appendSwitch('--enable-viewport-meta', 'true')
